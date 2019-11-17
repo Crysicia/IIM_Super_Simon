@@ -9,4 +9,11 @@ class Sequence {
     this.sequence.push(buttonNumber);
     return this.sequence;
   }
+
+  matchSequence(userSequence) {
+    const concatComputerSequence = this.sequence.join('');
+    const concatUserSequence = userSequence.join('');
+
+    return concatUserSequence == concatComputerSequence.slice(0, concatUserSequence.length);
+  }
 }
