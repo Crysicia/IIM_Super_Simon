@@ -41,22 +41,24 @@ class Button {
 class Game {
   constructor(buttons) {
     this.buttons = buttons;
-    this.sequence = new Sequence(this.buttons.length);
-    buttons.forEach((e) => {
+    this.sequence = new Sequence(Object.keys(this.buttons).length);
+    this.userSequence = [];
+    Object.values(this.buttons).forEach((e) => {
       e.element.addEventListener('click', () => { e.shine(); });
     });
   }
 
-  play() {
+  playSequence() {
     const actualSequence = this.sequence.generateSequence();
-
     actualSequence.forEach((e, i) => {
       setTimeout(() => {
-        this.buttons[e - 1].shine();
-        if (i === actualSequence.length - 1) { console.log('END'); }
+        this.buttons[e].shine();
+        if (i === actualSequence.length - 1) { console.log('END'); } // Callback sent when the sequence has been played
       }, i * 1000);
     });
   }
+
+
 }
 
 const $red = new Button('red', 'audio/do.mp3');
@@ -64,11 +66,7 @@ const $blue = new Button('blue', 'audio/re.mp3');
 const $green = new Button('green', 'audio/mi.mp3');
 const $yellow = new Button('yellow', 'audio/fa.mp3');
 
-const buttons = [$blue, $red, $green, $yellow];
+const buttons = {1: $red, 2: $blue, 3: $green, 4: $yellow};
 
 const game = new Game(buttons);
 
-// $blue.element.addEventListener("click", () => { $blue.shine() });
-// $red.element.addEventListener("click", () => { $red.shine() });
-// $green.element.addEventListener("click", () => { $green.shine() });
-// $yellow.element.addEventListener("click", () => { $yellow.shine() });
