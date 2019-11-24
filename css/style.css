@@ -28,7 +28,7 @@ body {
 }
 
 #gameover {
-	/*display: none;*/
+	display: none;
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -40,7 +40,7 @@ body {
 	border-radius: 12px;
 }
 
-#close {
+.close {
 	position: absolute;
 	font-size: 20px;
 	top: 5px;
