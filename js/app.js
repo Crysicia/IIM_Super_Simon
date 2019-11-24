@@ -44,19 +44,8 @@ class Button {
 class Game {
   constructor(elements) {
     this.elements = elements;
-    this.build();
-  }
-
-  build() {
-    this.turn = 0;
-    this.speed = 1200;
     this.buttons = this.elements.buttons;
-    this.gameOverModal = this.elements.modals.gameOver;
-    this.scoreboard = this.elements.scoreboard;
-    this.sequence = new Sequence(Object.keys(this.buttons).length);
-    this.playerTurn = false;
-    this.playerSequence = [];
-
+    this.build();
     for (const key in this.buttons) {
       this.buttons[key].element.addEventListener('click', () => {
         if (this.playerTurn) {
@@ -65,6 +54,18 @@ class Game {
         }
       });
     }
+  }
+
+  build() {
+    this.turn = 0;
+    this.speed = 1200;
+    this.gameOverModal = this.elements.modals.gameOver;
+    this.scoreboard = this.elements.scoreboard;
+    this.sequence = new Sequence(Object.keys(this.buttons).length);
+    this.playerTurn = false;
+    this.playerSequence = [];
+    this.displayTurn(0);
+    this.displayStreak(0);
   }
 
   nextTurn() {
@@ -117,9 +118,8 @@ class Game {
   }
 
   reset() {
-    this.displayTurn(0);
-    this.displayStreak(0);
     this.build();
+    this.nextTurn();
   }
 }
 
@@ -127,16 +127,12 @@ class Modal {
   constructor(id, open, close) {
     this.window = document.querySelector(id);
     this.close = document.querySelector(`${id} ${close}`);
-    this.close.addEventListener('click', () => {
-      this.hide();
-    });
+    this.close.addEventListener('click', () => { this.hide(); });
 
     // Open is an optionnal parameter
     if (open) {
       this.open = document.querySelector(open);
-      this.open.addEventListener('click', () => {
-        this.show();
-      });
+      this.open.addEventListener('click', () => { this.show(); });
     }
   }
 
@@ -179,10 +175,26 @@ const modals = {
   gameOver: gameOverModal,
 };
 
-
 const domElements = {
   buttons, scoreboard, modals,
 };
 
 const game = new Game(domElements);
-game.nextTurn();
+
+let pressedPlay = false;
+const $playButton = document.querySelector('#play');
+const $replayButtons = document.querySelectorAll('#replay');
+
+$playButton.addEventListener('click', () => {
+  if (pressedPlay) return;
+  game.nextTurn();
+  pressedPlay = true;
+});
+
+$replayButtons.forEach((e) => {
+  e.addEventListener('click', () => {
+    if (!pressedPlay) return;
+    gameOverModal.hide();
+    game.reset();
+  });
+});
