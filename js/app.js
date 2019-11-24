@@ -29,11 +29,11 @@ class Button {
     this.sound = new Audio(sound);
   }
 
-  shine() {
+  shine(speed) {
     this.stopSound();
     this.element.classList.add('active');
     this.sound.play();
-    setTimeout(() => { this.element.classList.remove('active'); }, 500);
+    setTimeout(() => { this.element.classList.remove('active'); }, speed / 2);
   }
 
   stopSound() {
@@ -44,6 +44,8 @@ class Button {
 
 class Game {
   constructor(buttons) {
+    this.turn = 0;
+    this.speed = 1200;
     this.buttons = buttons;
     this.sequence = new Sequence(Object.keys(this.buttons).length);
     this.playerTurn = false;
@@ -51,36 +53,40 @@ class Game {
 
     for (const key in this.buttons) {
       this.buttons[key].element.addEventListener('click', () => {
-        this.buttons[key].shine();
-        this.addToPlayerSequence(key);
+        if (this.playerTurn) {
+          this.buttons[key].shine(this.speed);
+          this.addToPlayerSequence(key);
+        }
       });
     }
   }
 
-  playSequence() {
+  nextTurn() {
     const actualSequence = this.sequence.generate();
+    this.turn++;
+    if (this.turn <= 8) { this.speed -= 100; }
+
     actualSequence.forEach((e, i) => {
       setTimeout(() => {
-        this.buttons[e].shine();
-        if (i === actualSequence.length - 1) { console.log('Callback'); this.userTurn(); } // Callback sent when the sequence has been played
-      }, i * 1000);
+        this.buttons[e].shine(this.speed);
+        if (i === actualSequence.length - 1) { this.userTurn(); } // Callback sent when the sequence has been played
+      }, i * this.speed);
     });
   }
 
-  addToPlayerSequence(button) {
-    if (!this.playerTurn) return;
-    this.playerSequence.push(parseInt(button));
-    const match = this.sequence.match(this.playerSequence);
-    if (!match) {
-      console.error('Game over!');
-      return;
-    }
+  over() {
+    this.playerTurn = false;
+    console.error('Game over!');
+  }
 
+  addToPlayerSequence(button) {
+    this.playerSequence.push(parseInt(button));
+
+    if (!this.sequence.match(this.playerSequence)) { this.over(); return; }
     if (this.playerSequence.length === this.sequence.length()) {
       this.playerTurn = false;
-      setTimeout(() => { this.playSequence(); }, 1000);
+      setTimeout(() => { this.nextTurn(); }, 2000);
     }
-    console.log(match);
   }
 
   userTurn() {
@@ -98,4 +104,4 @@ const buttons = {
   1: $red, 2: $blue, 3: $green, 4: $yellow,
 };
 
-const game = new Game(buttons);
+const game = new Game(buttons).nextTurn();
