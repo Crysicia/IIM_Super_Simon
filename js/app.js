@@ -71,8 +71,6 @@ class Game {
     const actualSequence = this.sequence.generate();
     this.turn++;
 
-    this.scoreboard['streak'].innerHTML = 0;
-    this.scoreboard['whoseturn'].innerHTML = "Simon's turn!";
     this.scoreboard['turn'].innerHTML = this.turn;
 
     if (this.turn <= 8) { this.speed -= 100; }
@@ -98,7 +96,9 @@ class Game {
     if (!this.sequence.match(this.playerSequence)) { this.over(); return; }
     if (this.playerSequence.length === this.sequence.length()) {
       this.playerTurn = false;
-      setTimeout(() => { this.nextTurn(); }, 2000);
+      this.scoreboard['whoseturn'].innerHTML = "Simon's turn!";
+      this.scoreboard['streak'].innerHTML = 0;
+      setTimeout(() => { this.nextTurn(); }, 1200);
     }
   }
 
@@ -114,6 +114,8 @@ class Game {
     this.build();
   }
 }
+
+// Init game
 
 const $red = new Button('red', 'audio/do.mp3');
 const $blue = new Button('blue', 'audio/re.mp3');
