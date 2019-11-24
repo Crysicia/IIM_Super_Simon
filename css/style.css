@@ -1,0 +1,69 @@
+body {
+	font-family: sans-serif;
+}
+
+p {
+	-webkit-text-fill-color: transparent;
+	font-size: 48px;
+}
+
+#red {
+	background-color: #e74c3c;
+}
+
+#blue {
+	background-color: #3498db;
+}
+
+#yellow {
+	background-color: #f1c40f;
+}
+
+#green {
+	background-color: #2ecc71;
+}
+
+#infos {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	font-weight: bolder;
+	font-size: 34px;
+}
+
+.active {
+	filter: brightness(150%);
+}
+
+.active p {
+	-webkit-text-fill-color: rgba(0, 0, 0, 0.3);
+}
+
+.game {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.container {
+	margin: auto;
+  width: 600px;
+  height: 600px;
+  display: grid;
+  grid-template-columns: 300px 300px;
+  grid-row: auto auto;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
+.container .box {
+	display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.scoreboard {
+	position: absolute;
+}
