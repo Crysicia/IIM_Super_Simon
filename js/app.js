@@ -70,7 +70,8 @@ class Game {
   nextTurn() {
     const actualSequence = this.sequence.generate();
     this.turn++;
-
+    
+    this.scoreboard['streak'].innerHTML = 0;
     this.scoreboard['turn'].innerHTML = this.turn;
 
     if (this.turn <= 8) { this.speed -= 100; }
