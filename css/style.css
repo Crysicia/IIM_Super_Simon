@@ -46,14 +46,13 @@ p {
 }
 
 .container {
-	margin: auto;
-  width: 600px;
-  height: 600px;
-  display: grid;
-  grid-template-columns: 300px 300px;
+	display: grid;
+  width: 800px;
+  height: 800px;
+  grid-template-columns: 400px 400px;
   grid-row: auto auto;
-  grid-column-gap: 20px;
-  grid-row-gap: 20px;
+  grid-column-gap: 45px;
+  grid-row-gap: 45px;
 }
 
 .container .box {
@@ -66,4 +65,5 @@ p {
 
 .scoreboard {
 	position: absolute;
+	text-align: center;;
 }

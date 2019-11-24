@@ -70,8 +70,9 @@ class Game {
   nextTurn() {
     const actualSequence = this.sequence.generate();
     this.turn++;
-    
+
     this.scoreboard['streak'].innerHTML = 0;
+    this.scoreboard['whoseturn'].innerHTML = "Simon's turn!";
     this.scoreboard['turn'].innerHTML = this.turn;
 
     if (this.turn <= 8) { this.speed -= 100; }
@@ -104,6 +105,7 @@ class Game {
   userTurn() {
     this.playerSequence = [];
     this.playerTurn = true;
+    this.scoreboard['whoseturn'].innerHTML = "Your turn!";
   }
 
   reset() {
@@ -119,6 +121,7 @@ const $green = new Button('green', 'audio/mi.mp3');
 const $yellow = new Button('yellow', 'audio/fa.mp3');
 
 const $turnDisplay = document.querySelector('#turn-display');
+const $whoseTurnDisplay = document.querySelector('#whoseturn');
 const $streakDisplay = document.querySelector('#streak-display');
 
 const buttons = {
@@ -126,7 +129,7 @@ const buttons = {
 };
 
 const scoreboard = {
-  turn: $turnDisplay, streak: $streakDisplay,
+  turn: $turnDisplay, streak: $streakDisplay, whoseturn: $whoseTurnDisplay,
 }
 
 const domElements = {
