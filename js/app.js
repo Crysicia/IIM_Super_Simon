@@ -173,7 +173,7 @@ const scoreboard = {
 
 // Modals
 const gameOverModal = new Modal('#gameover', '', '.close');
-const rulesModal = new Modal('#gameover', '#infos', '.close');
+new Modal('#rules', '#infos', '.close');
 
 const modals = {
   gameOver: gameOverModal,
