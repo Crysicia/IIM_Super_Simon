@@ -43,10 +43,16 @@ class Button {
 }
 
 class Game {
-  constructor(buttons) {
+  constructor(elements) {
+    this.elements = elements;
+    this.build();
+  }
+
+  build() {
     this.turn = 0;
     this.speed = 1200;
-    this.buttons = buttons;
+    this.buttons = this.elements['buttons'];
+    this.scoreboard = this.elements['scoreboard'];
     this.sequence = new Sequence(Object.keys(this.buttons).length);
     this.playerTurn = false;
     this.playerSequence = [];
@@ -64,6 +70,9 @@ class Game {
   nextTurn() {
     const actualSequence = this.sequence.generate();
     this.turn++;
+
+    this.scoreboard['turn'].innerHTML = this.turn;
+
     if (this.turn <= 8) { this.speed -= 100; }
 
     actualSequence.forEach((e, i) => {
@@ -82,6 +91,8 @@ class Game {
   addToPlayerSequence(button) {
     this.playerSequence.push(parseInt(button));
 
+    this.scoreboard['streak'].innerHTML = this.playerSequence.length;
+
     if (!this.sequence.match(this.playerSequence)) { this.over(); return; }
     if (this.playerSequence.length === this.sequence.length()) {
       this.playerTurn = false;
@@ -93,6 +104,12 @@ class Game {
     this.playerSequence = [];
     this.playerTurn = true;
   }
+
+  reset() {
+    this.scoreboard['turn'].innerHTML = 0;
+    this.scoreboard['streak'].innerHTML = 0;
+    this.build();
+  }
 }
 
 const $red = new Button('red', 'audio/do.mp3');
@@ -100,8 +117,21 @@ const $blue = new Button('blue', 'audio/re.mp3');
 const $green = new Button('green', 'audio/mi.mp3');
 const $yellow = new Button('yellow', 'audio/fa.mp3');
 
+const $turnDisplay = document.querySelector('#turn-display');
+const $streakDisplay = document.querySelector('#streak-display');
+
 const buttons = {
   1: $red, 2: $blue, 3: $green, 4: $yellow,
 };
 
-const game = new Game(buttons).nextTurn();
+const scoreboard = {
+  turn: $turnDisplay, streak: $streakDisplay,
+}
+
+const domElements = {
+  buttons: buttons, scoreboard: scoreboard,
+}
+
+
+const game = new Game(domElements);
+game.nextTurn();
